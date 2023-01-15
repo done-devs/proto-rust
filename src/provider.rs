@@ -62,6 +62,17 @@ pub struct TaskResponse {
 #[derive(serde::Deserialize, serde::Serialize)]
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TaskIdResponse {
+    #[prost(bool, tag = "1")]
+    pub successful: bool,
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
+    #[prost(string, repeated, tag = "3")]
+    pub tasks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+#[derive(serde::Deserialize, serde::Serialize)]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListResponse {
     #[prost(bool, tag = "1")]
     pub successful: bool,
@@ -69,6 +80,17 @@ pub struct ListResponse {
     pub message: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "3")]
     pub list: ::core::option::Option<List>,
+}
+#[derive(serde::Deserialize, serde::Serialize)]
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListIdResponse {
+    #[prost(bool, tag = "1")]
+    pub successful: bool,
+    #[prost(string, tag = "2")]
+    pub message: ::prost::alloc::string::String,
+    #[prost(string, repeated, tag = "3")]
+    pub lists: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[derive(serde::Deserialize, serde::Serialize)]
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -325,6 +347,25 @@ pub mod provider_client {
             );
             self.inner.server_streaming(request.into_request(), path, codec).await
         }
+        pub async fn read_task_ids_from_list(
+            &mut self,
+            request: impl tonic::IntoRequest<::prost::alloc::string::String>,
+        ) -> Result<tonic::Response<super::TaskIdResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/provider.Provider/ReadTaskIdsFromList",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         pub async fn read_task_count_from_list(
             &mut self,
             request: impl tonic::IntoRequest<::prost::alloc::string::String>,
@@ -441,6 +482,25 @@ pub mod provider_client {
                 "/provider.Provider/ReadAllLists",
             );
             self.inner.server_streaming(request.into_request(), path, codec).await
+        }
+        pub async fn read_all_list_ids(
+            &mut self,
+            request: impl tonic::IntoRequest<super::Empty>,
+        ) -> Result<tonic::Response<super::ListIdResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/provider.Provider/ReadAllListIds",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
         pub async fn create_list(
             &mut self,
@@ -563,6 +623,10 @@ pub mod provider_server {
             &self,
             request: tonic::Request<::prost::alloc::string::String>,
         ) -> Result<tonic::Response<Self::ReadTasksFromListStream>, tonic::Status>;
+        async fn read_task_ids_from_list(
+            &self,
+            request: tonic::Request<::prost::alloc::string::String>,
+        ) -> Result<tonic::Response<super::TaskIdResponse>, tonic::Status>;
         async fn read_task_count_from_list(
             &self,
             request: tonic::Request<::prost::alloc::string::String>,
@@ -593,6 +657,10 @@ pub mod provider_server {
             &self,
             request: tonic::Request<super::Empty>,
         ) -> Result<tonic::Response<Self::ReadAllListsStream>, tonic::Status>;
+        async fn read_all_list_ids(
+            &self,
+            request: tonic::Request<super::Empty>,
+        ) -> Result<tonic::Response<super::ListIdResponse>, tonic::Status>;
         async fn create_list(
             &self,
             request: tonic::Request<super::List>,
@@ -898,6 +966,46 @@ pub mod provider_server {
                     };
                     Box::pin(fut)
                 }
+                "/provider.Provider/ReadTaskIdsFromList" => {
+                    #[allow(non_camel_case_types)]
+                    struct ReadTaskIdsFromListSvc<T: Provider>(pub Arc<T>);
+                    impl<
+                        T: Provider,
+                    > tonic::server::UnaryService<::prost::alloc::string::String>
+                    for ReadTaskIdsFromListSvc<T> {
+                        type Response = super::TaskIdResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<::prost::alloc::string::String>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move {
+                                (*inner).read_task_ids_from_list(request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = ReadTaskIdsFromListSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
                 "/provider.Provider/ReadTaskCountFromList" => {
                     #[allow(non_camel_case_types)]
                     struct ReadTaskCountFromListSvc<T: Provider>(pub Arc<T>);
@@ -1121,6 +1229,44 @@ pub mod provider_server {
                                 send_compression_encodings,
                             );
                         let res = grpc.server_streaming(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/provider.Provider/ReadAllListIds" => {
+                    #[allow(non_camel_case_types)]
+                    struct ReadAllListIdsSvc<T: Provider>(pub Arc<T>);
+                    impl<T: Provider> tonic::server::UnaryService<super::Empty>
+                    for ReadAllListIdsSvc<T> {
+                        type Response = super::ListIdResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::Empty>,
+                        ) -> Self::Future {
+                            let inner = self.0.clone();
+                            let fut = async move {
+                                (*inner).read_all_list_ids(request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = ReadAllListIdsSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            );
+                        let res = grpc.unary(method, req).await;
                         Ok(res)
                     };
                     Box::pin(fut)

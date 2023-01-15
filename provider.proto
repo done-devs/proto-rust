@@ -12,6 +12,7 @@ service Provider {
 
     rpc ReadAllTasks (Empty) returns (stream TaskResponse);
     rpc ReadTasksFromList(google.protobuf.StringValue) returns (stream TaskResponse);
+    rpc ReadTaskIdsFromList(google.protobuf.StringValue) returns (TaskIdResponse);
     rpc ReadTaskCountFromList(google.protobuf.StringValue) returns (CountResponse);
     rpc CreateTask (Task) returns (TaskResponse);
     rpc ReadTask (google.protobuf.StringValue) returns (TaskResponse);
@@ -19,6 +20,7 @@ service Provider {
     rpc DeleteTask (google.protobuf.StringValue) returns (TaskResponse);
 
     rpc ReadAllLists (Empty) returns (stream ListResponse);
+    rpc ReadAllListIds (Empty) returns (ListIdResponse);
     rpc CreateList (List) returns (ListResponse);
     rpc ReadList (google.protobuf.StringValue) returns (ListResponse);
     rpc UpdateList (List) returns (ListResponse);
@@ -68,10 +70,22 @@ message TaskResponse {
     optional Task task = 3;
 }
 
+message TaskIdResponse {
+    bool successful = 1;
+    string message = 2;
+    repeated string tasks = 3;
+}
+
 message ListResponse {
     bool successful = 1;
     string message = 2;
     optional List list = 3;
+}
+
+message ListIdResponse {
+    bool successful = 1;
+    string message = 2;
+    repeated string lists = 3;
 }
 
 message CountResponse {
