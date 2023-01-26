@@ -44,8 +44,8 @@ impl Task {
             due_date: None,
             reminder_date: None,
             recurrence: None,
-            created_date_time: Utc::now().timestamp(),
-            last_modified_date_time: Utc::now().timestamp(),
+            created_date_time: Some(Utc::now().naive_utc().into()),
+            last_modified_date_time: Some(Utc::now().naive_utc().into()),
         }
     }
 }
