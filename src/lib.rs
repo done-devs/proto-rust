@@ -43,7 +43,6 @@ impl Task {
             deletion_date: None,
             due_date: None,
             reminder_date: None,
-            reminder_time: None,
             recurrence: None,
             created_date_time: Utc::now().timestamp(),
             last_modified_date_time: Utc::now().timestamp(),

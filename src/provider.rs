@@ -47,13 +47,11 @@ pub struct Task {
     pub due_date: ::core::option::Option<::prost_wkt_types::Timestamp>,
     #[prost(message, optional, tag = "15")]
     pub reminder_date: ::core::option::Option<::prost_wkt_types::Timestamp>,
-    #[prost(message, optional, tag = "16")]
-    pub reminder_time: ::core::option::Option<::prost_wkt_types::Timestamp>,
-    #[prost(string, optional, tag = "17")]
+    #[prost(string, optional, tag = "16")]
     pub recurrence: ::core::option::Option<::prost::alloc::string::String>,
-    #[prost(int64, tag = "18")]
+    #[prost(int64, tag = "17")]
     pub created_date_time: i64,
-    #[prost(int64, tag = "19")]
+    #[prost(int64, tag = "18")]
     pub last_modified_date_time: i64,
 }
 #[derive(serde::Serialize, serde::Deserialize)]
