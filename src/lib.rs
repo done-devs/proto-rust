@@ -9,6 +9,10 @@ use provider::provider_client::ProviderClient as Client;
 pub use tonic::transport::Channel;
 pub type ProviderClient = Client<Channel>;
 
+pub mod types {
+    pub use prost_wkt_types::*;
+}
+
 impl List {
     pub fn new(name: &str) -> Self {
         Self {
