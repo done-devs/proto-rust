@@ -229,7 +229,7 @@ pub mod provider_client {
         }
         pub async fn get_tasks(
             &mut self,
-            request: impl tonic::IntoRequest<()>,
+            request: impl tonic::IntoRequest<::prost::alloc::string::String>,
         ) -> Result<
             tonic::Response<tonic::codec::Streaming<super::ProviderResponse>>,
             tonic::Status,
@@ -504,7 +504,7 @@ pub mod provider_server {
             + 'static;
         async fn get_tasks(
             &self,
-            request: tonic::Request<()>,
+            request: tonic::Request<::prost::alloc::string::String>,
         ) -> Result<tonic::Response<Self::GetTasksStream>, tonic::Status>;
         async fn create_task(
             &self,
@@ -667,15 +667,21 @@ pub mod provider_server {
                 "/provider.Provider/GetTasks" => {
                     #[allow(non_camel_case_types)]
                     struct GetTasksSvc<T: Provider>(pub Arc<T>);
-                    impl<T: Provider> tonic::server::ServerStreamingService<()>
-                    for GetTasksSvc<T> {
+                    impl<
+                        T: Provider,
+                    > tonic::server::ServerStreamingService<
+                        ::prost::alloc::string::String,
+                    > for GetTasksSvc<T> {
                         type Response = super::ProviderResponse;
                         type ResponseStream = T::GetTasksStream;
                         type Future = BoxFuture<
                             tonic::Response<Self::ResponseStream>,
                             tonic::Status,
                         >;
-                        fn call(&mut self, request: tonic::Request<()>) -> Self::Future {
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<::prost::alloc::string::String>,
+                        ) -> Self::Future {
                             let inner = self.0.clone();
                             let fut = async move { (*inner).get_tasks(request).await };
                             Box::pin(fut)
