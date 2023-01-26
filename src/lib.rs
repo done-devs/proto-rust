@@ -10,7 +10,9 @@ pub use tonic::transport::Channel;
 pub type ProviderClient = Client<Channel>;
 
 pub mod types {
-    pub use prost_wkt_types::*;
+    pub use prost_wkt_types::Value;
+    pub use prost_wkt_types::Any;
+    pub use prost_wkt_types::Timestamp;
 }
 
 impl List {
