@@ -10,7 +10,13 @@ pub struct ProviderResponse {
     #[prost(int64, tag = "3")]
     pub count: i64,
     #[prost(message, optional, tag = "4")]
-    pub value: ::core::option::Option<::prost_wkt_types::Value>,
+    pub task: ::core::option::Option<Task>,
+    #[prost(message, optional, tag = "5")]
+    pub list: ::core::option::Option<List>,
+    #[prost(string, repeated, tag = "6")]
+    pub lists: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "7")]
+    pub tasks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[derive(serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
