@@ -4,6 +4,11 @@ use uuid::Uuid;
 pub mod provider;
 pub use provider::*;
 
+use provider::provider_client::ProviderClient as Client;
+
+pub use tonic::transport::Channel;
+pub type ProviderClient = Client<Channel>;
+
 impl List {
     pub fn new(name: &str) -> Self {
         Self {
