@@ -33,7 +33,6 @@ impl Task {
             title,
             favorite: false,
             today: false,
-            is_reminder_on: false,
             status: Status::NotStarted as i32,
             priority: Priority::Low as i32,
             sub_tasks: vec![],

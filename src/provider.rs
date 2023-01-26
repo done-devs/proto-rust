@@ -27,8 +27,6 @@ pub struct Task {
     pub favorite: bool,
     #[prost(bool, tag = "5")]
     pub today: bool,
-    #[prost(bool, tag = "6")]
-    pub is_reminder_on: bool,
     #[prost(enumeration = "Status", tag = "7")]
     pub status: i32,
     #[prost(enumeration = "Priority", tag = "8")]
