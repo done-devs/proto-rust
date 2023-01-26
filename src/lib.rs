@@ -1,19 +1,15 @@
 use chrono::Utc;
 use uuid::Uuid;
 
-pub use tonic::transport::Channel;
-
 pub mod provider;
 pub use provider::*;
 
 impl List {
-    pub fn new(name: &str, provider: &str) -> Self {
+    pub fn new(name: &str) -> Self {
         Self {
             id: Uuid::new_v4().to_string(),
             name: name.to_string(),
-            is_owner: true,
             icon: Some("✍️".to_string()),
-            provider: provider.to_string(),
         }
     }
 }
@@ -24,14 +20,20 @@ impl Task {
             id: Uuid::new_v4().to_string(),
             parent,
             title,
-            body: None,
-            importance: 0,
             favorite: false,
+            today: false,
             is_reminder_on: false,
+            status: Status::NotStarted as i32,
+            priority: Priority::Low as i32,
+            sub_tasks: vec![],
+            tags: vec![],
+            notes: None,
+            completion_date: None,
+            deletion_date: None,
             due_date: None,
             reminder_date: None,
-            completed_on: None,
-            status: 0,
+            reminder_time: None,
+            recurrence: None,
             created_date_time: Utc::now().timestamp(),
             last_modified_date_time: Utc::now().timestamp(),
         }
